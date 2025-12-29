@@ -20,6 +20,8 @@ terraform-azure-gcp/
 ```
 
 ## 🚀 Quick Start
+### Prerequisites
+make sure `terraform-gcp-datawarehouse-369d72c63b0e.json` exist in the root folder, `gcp.tfvars` in `terraform-gcp/`, and `azure.tfvars` in `terraform-azure/` 
 
 ### Azure Deployment
 
