@@ -12,7 +12,8 @@ gcloud auth application-default login
    - Update `organization_id`
    - Update `billing_account`
    - Update `tf_dev_folder_id`
-   - Update all `folder_ids`
+   - Set `project_prefix` (e.g., `tf-dev`)
+   - Adjust project/module settings as needed
 
 2. **Verify `backend.tf`** (already configured):
    - GCS bucket: `tf-dev-gcp-terraform-state`

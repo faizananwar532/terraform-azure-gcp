@@ -8,21 +8,6 @@ variable "billing_account" {
   type        = string
 }
 
-variable "folder_ids" {
-  description = "Map of folder IDs"
-  type = object({
-    data_analytics        = string
-    data_core             = string
-    monitoring            = string
-    networking            = string
-    security              = string
-    data_core_archive     = string
-    data_core_development = string
-    data_core_production  = string
-    looker                = string
-  })
-}
-
 variable "monitoring_project_id" {
   description = "The GCP project ID for the Central Monitoring project"
   type        = string

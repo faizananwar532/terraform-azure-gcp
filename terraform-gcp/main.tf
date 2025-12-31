@@ -2,6 +2,23 @@
 #
 # All configuration is managed through a single centralized variables file
 
+locals {
+  project_prefix = var.project_prefix
+
+  data_core_archive_project_id     = coalesce(var.data_core.archive_project_id, "${local.project_prefix}-data-core-archive")
+  data_core_development_project_id = coalesce(var.data_core.development_project_id, "${local.project_prefix}-data-core-dev")
+  data_core_production_project_id  = coalesce(var.data_core.production_project_id, "${local.project_prefix}-data-core-prod")
+
+  networking_dev_project_id  = var.networking != null ? coalesce(var.networking.development_project_id, "${local.project_prefix}-network-development") : null
+  networking_prod_project_id = var.networking != null ? coalesce(var.networking.production_project_id, "${local.project_prefix}-network-production") : null
+
+  security_project_id   = var.security != null ? coalesce(var.security.project_id, "${local.project_prefix}-security-acm") : null
+  monitoring_project_id = var.monitoring != null ? coalesce(var.monitoring.project_id, "${local.project_prefix}-central-monitoring") : null
+
+  looker_dev_project_id  = var.data_analytics != null ? coalesce(var.data_analytics.looker_dev_project_id, "${local.project_prefix}-looker-development") : null
+  looker_prod_project_id = var.data_analytics != null ? coalesce(var.data_analytics.looker_prod_project_id, "${local.project_prefix}-looker-production") : null
+}
+
 # ========================================
 # Data Core Project
 # ========================================
@@ -12,12 +29,11 @@ module "data_core" {
   # Infrastructure
   tf_dev_folder_id = var.tf_dev_folder_id
   billing_account  = var.billing_account
-  folder_ids       = var.folder_ids
 
   # Project IDs
-  archive_project_id     = var.data_core.archive_project_id
-  development_project_id = var.data_core.development_project_id
-  production_project_id  = var.data_core.production_project_id
+  archive_project_id     = local.data_core_archive_project_id
+  development_project_id = local.data_core_development_project_id
+  production_project_id  = local.data_core_production_project_id
 
   # Dataset IDs
   archive_dataset_id     = var.data_core.archive_dataset_id
@@ -64,9 +80,8 @@ module "security" {
   # Infrastructure
   tf_dev_folder_id = var.tf_dev_folder_id
   billing_account  = var.billing_account
-  folder_ids       = var.folder_ids
 
-  security_project_id = var.security.project_id
+  security_project_id = local.security_project_id
   common_labels       = var.common_labels
 }
 
@@ -81,10 +96,9 @@ module "networking" {
   # Infrastructure
   tf_dev_folder_id = var.tf_dev_folder_id
   billing_account  = var.billing_account
-  folder_ids       = var.folder_ids
 
-  networking_dev_project_id  = var.networking.development_project_id
-  networking_prod_project_id = var.networking.production_project_id
+  networking_dev_project_id  = local.networking_dev_project_id
+  networking_prod_project_id = local.networking_prod_project_id
   
   region           = var.region
   dev_subnet_cidr  = var.networking.dev_subnet_cidr
@@ -107,9 +121,8 @@ module "monitoring" {
   # Infrastructure
   tf_dev_folder_id = var.tf_dev_folder_id
   billing_account  = var.billing_account
-  folder_ids       = var.folder_ids
 
-  monitoring_project_id = var.monitoring.project_id
+  monitoring_project_id = local.monitoring_project_id
   common_labels         = var.common_labels
 }
 
@@ -124,10 +137,9 @@ module "data_analytics" {
  # Infrastructure
  tf_dev_folder_id = var.tf_dev_folder_id
  billing_account  = var.billing_account
- folder_ids       = var.folder_ids
 
- looker_dev_project_id  = var.data_analytics.looker_dev_project_id
- looker_prod_project_id = var.data_analytics.looker_prod_project_id
+ looker_dev_project_id  = local.looker_dev_project_id
+ looker_prod_project_id = local.looker_prod_project_id
  
  common_labels = var.common_labels
 }
