@@ -40,13 +40,13 @@ resource "azurerm_private_endpoint" "blob" {
     subresource_names              = ["blob"]
   }
 
-  dynamic "private_dns_zone_group" {
-    for_each = length(var.private_dns_zone_ids) > 0 && lookup(var.private_dns_zone_ids, "blob", null) != null ? [1] : []
-    content {
-      name                 = "pdz-group-blob"
-      private_dns_zone_ids = [var.private_dns_zone_ids["blob"]]
-    }
+  private_dns_zone_group {
+    name                 = "pdz-group-blob"
+    private_dns_zone_ids = length(var.private_dns_zone_ids) > 0 && lookup(var.private_dns_zone_ids, "blob", null) != null ? [var.private_dns_zone_ids["blob"]] : []
   }
+
+  # Custom NIC name with nic- prefix
+  custom_network_interface_name = "nic-${azurerm_storage_account.main.name}-blob"
 }
 
 # Private Endpoint for DFS (Data Lake)
@@ -64,11 +64,11 @@ resource "azurerm_private_endpoint" "dfs" {
     subresource_names              = ["dfs"]
   }
 
-  dynamic "private_dns_zone_group" {
-    for_each = length(var.private_dns_zone_ids) > 0 && lookup(var.private_dns_zone_ids, "dfs", null) != null ? [1] : []
-    content {
-      name                 = "pdz-group-dfs"
-      private_dns_zone_ids = [var.private_dns_zone_ids["dfs"]]
-    }
+  private_dns_zone_group {
+    name                 = "pdz-group-dfs"
+    private_dns_zone_ids = length(var.private_dns_zone_ids) > 0 && lookup(var.private_dns_zone_ids, "dfs", null) != null ? [var.private_dns_zone_ids["dfs"]] : []
   }
+
+  # Custom NIC name with nic- prefix
+  custom_network_interface_name = "nic-${azurerm_storage_account.main.name}-dfs"
 }

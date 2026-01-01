@@ -219,3 +219,177 @@ resource "azurerm_virtual_network_peering" "core_to_analytics" {
   
   depends_on = [module.core_subscription, module.analytics_subscription]
 }
+
+# ========================================
+# Private DNS Zone VNet Links for Spoke Networks
+# Link all spoke VNets to the private DNS zones in Core
+# ========================================
+
+# Dev VNet Links
+resource "azurerm_private_dns_zone_virtual_network_link" "dev_blob" {
+  provider              = azurerm.core
+  name                  = "vnet-link-blob-dev"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.blob.core.windows.net"
+  virtual_network_id    = module.dev_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.dev_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dev_dfs" {
+  provider              = azurerm.core
+  name                  = "vnet-link-dfs-dev"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.dfs.core.windows.net"
+  virtual_network_id    = module.dev_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.dev_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dev_keyvault" {
+  provider              = azurerm.core
+  name                  = "vnet-link-keyvault-dev"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.vaultcore.azure.net"
+  virtual_network_id    = module.dev_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.dev_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dev_datafactory" {
+  provider              = azurerm.core
+  name                  = "vnet-link-datafactory-dev"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.datafactory.azure.net"
+  virtual_network_id    = module.dev_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.dev_subscription]
+}
+
+# Test VNet Links
+resource "azurerm_private_dns_zone_virtual_network_link" "test_blob" {
+  provider              = azurerm.core
+  name                  = "vnet-link-blob-test"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.blob.core.windows.net"
+  virtual_network_id    = module.test_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.test_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "test_dfs" {
+  provider              = azurerm.core
+  name                  = "vnet-link-dfs-test"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.dfs.core.windows.net"
+  virtual_network_id    = module.test_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.test_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "test_keyvault" {
+  provider              = azurerm.core
+  name                  = "vnet-link-keyvault-test"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.vaultcore.azure.net"
+  virtual_network_id    = module.test_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.test_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "test_datafactory" {
+  provider              = azurerm.core
+  name                  = "vnet-link-datafactory-test"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.datafactory.azure.net"
+  virtual_network_id    = module.test_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.test_subscription]
+}
+
+# Prod VNet Links
+resource "azurerm_private_dns_zone_virtual_network_link" "prod_blob" {
+  provider              = azurerm.core
+  name                  = "vnet-link-blob-prod"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.blob.core.windows.net"
+  virtual_network_id    = module.prod_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.prod_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "prod_dfs" {
+  provider              = azurerm.core
+  name                  = "vnet-link-dfs-prod"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.dfs.core.windows.net"
+  virtual_network_id    = module.prod_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.prod_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "prod_keyvault" {
+  provider              = azurerm.core
+  name                  = "vnet-link-keyvault-prod"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.vaultcore.azure.net"
+  virtual_network_id    = module.prod_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.prod_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "prod_datafactory" {
+  provider              = azurerm.core
+  name                  = "vnet-link-datafactory-prod"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.datafactory.azure.net"
+  virtual_network_id    = module.prod_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.prod_subscription]
+}
+
+# Analytics VNet Links
+resource "azurerm_private_dns_zone_virtual_network_link" "analytics_blob" {
+  provider              = azurerm.core
+  name                  = "vnet-link-blob-analytics"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.blob.core.windows.net"
+  virtual_network_id    = module.analytics_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.analytics_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "analytics_dfs" {
+  provider              = azurerm.core
+  name                  = "vnet-link-dfs-analytics"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.dfs.core.windows.net"
+  virtual_network_id    = module.analytics_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.analytics_subscription]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "analytics_keyvault" {
+  provider              = azurerm.core
+  name                  = "vnet-link-keyvault-analytics"
+  resource_group_name   = module.core_subscription.networking_resource_group_name
+  private_dns_zone_name = "privatelink.vaultcore.azure.net"
+  virtual_network_id    = module.analytics_subscription.vnet_id
+  registration_enabled  = false
+  
+  depends_on = [module.core_subscription, module.analytics_subscription]
+}

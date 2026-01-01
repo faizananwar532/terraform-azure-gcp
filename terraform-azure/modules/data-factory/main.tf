@@ -26,11 +26,11 @@ resource "azurerm_private_endpoint" "datafactory" {
     subresource_names              = ["dataFactory"]
   }
 
-  dynamic "private_dns_zone_group" {
-    for_each = var.private_dns_zone_id != null && var.private_dns_zone_id != "" ? [1] : []
-    content {
-      name                 = "pdz-group-datafactory"
-      private_dns_zone_ids = [var.private_dns_zone_id]
-    }
+  private_dns_zone_group {
+    name                 = "pdz-group-datafactory"
+    private_dns_zone_ids = var.private_dns_zone_id != null && var.private_dns_zone_id != "" ? [var.private_dns_zone_id] : []
   }
+
+  # Custom NIC name with nic- prefix
+  custom_network_interface_name = "nic-${azurerm_data_factory.main.name}"
 }

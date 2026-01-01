@@ -1,6 +1,6 @@
 # Virtual Network
 resource "azurerm_virtual_network" "main" {
-  name                = "vnet-${var.company_name}-${var.region_code}${var.environment}"
+  name                = "vnet-${var.company_name}-${var.region_code}-${var.environment}"
   location            = var.location
   resource_group_name = var.resource_group_name
   address_space       = [var.vnet_address_space]

@@ -32,11 +32,11 @@ resource "azurerm_private_endpoint" "keyvault" {
     subresource_names              = ["vault"]
   }
 
-  dynamic "private_dns_zone_group" {
-    for_each = var.private_dns_zone_id != null && var.private_dns_zone_id != "" ? [1] : []
-    content {
-      name                 = "pdz-group-keyvault"
-      private_dns_zone_ids = [var.private_dns_zone_id]
-    }
+  private_dns_zone_group {
+    name                 = "pdz-group-keyvault"
+    private_dns_zone_ids = var.private_dns_zone_id != null && var.private_dns_zone_id != "" ? [var.private_dns_zone_id] : []
   }
+
+  # Custom NIC name with nic- prefix
+  custom_network_interface_name = "nic-${azurerm_key_vault.main.name}"
 }
